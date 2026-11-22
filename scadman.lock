@@ -1,0 +1,23 @@
+version = 1
+
+[[package]]
+name = "bayonet-lock-scad"
+source = "https://github.com/CameronBrooks11/bayonet-lock-scad"
+rev = "d5bd0077183b0c884f616ea544827a25c7c6aec4"
+hash = "b53dfb90167596d70e0d391d3c67aba37e3372e0d20e3b74914f9f72fae80139"
+
+[[package]]
+name = "bayonet-port-scad"
+source = "https://github.com/CameronBrooks11/bayonet-port-scad"
+rev = "f67c8466af73606b6c11f76d46a999f6eecec2dd"
+hash = "66c3766c710e3e9a88ea0afc99ae161589047bd18427a11cf51822ca04501211"
+dependencies = [
+    "bayonet-lock-scad",
+    "threads-scad",
+]
+
+[[package]]
+name = "threads-scad"
+source = "https://github.com/rcolyer/threads-scad"
+rev = "4ae9aeb3b136f9858200f77a304b909a000ce3b4"
+hash = "6daa2b750256b60fd64d1e35fefb653ddfba72ccefe3d0d2d8558168c1b3a937"

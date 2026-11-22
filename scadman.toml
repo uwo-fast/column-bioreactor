@@ -1,0 +1,15 @@
+# The OpenSCAD libraries the lid uses. bayonet-port-scad pins bayonet-lock-scad and threads-scad
+# itself; threads-scad is listed here too, at the same revision, because the lid's NPT thread uses
+# it directly.
+
+[project]
+name = "column-bioreactor"
+
+[dependencies.bayonet-port-scad]
+git = "https://github.com/CameronBrooks11/bayonet-port-scad"
+tag = "v0.1.0"
+
+# It publishes no tags, so it is pinned to a commit.
+[dependencies.threads-scad]
+git = "https://github.com/rcolyer/threads-scad"
+rev = "4ae9aeb3b136f9858200f77a304b909a000ce3b4"
