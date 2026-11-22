@@ -1,0 +1,45 @@
+name: Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: extractions/setup-just@v4
+
+      # The snapshot open-source-bioreactor pins, so the lid's ports render with the same binary.
+      # The AppImage is extracted, so it needs no FUSE; it takes its GL libraries and fonts from
+      # the host.
+      - name: Install OpenSCAD
+        env:
+          OPENSCAD_SNAPSHOT: "2026.10.15"
+          OPENSCAD_SHA256: "9d26e390d3a5c94f2e304d94d7b2eff77fb11fcd25829f2814de147ba92ac363"
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends libegl1 libgl1 libopengl0 libglx0 libgbm1 libwayland-client0 libx11-xcb1 fonts-liberation fontconfig
+          dir="$RUNNER_TEMP/openscad"
+          file="OpenSCAD-$OPENSCAD_SNAPSHOT-x86_64.AppImage"
+          mkdir -p "$dir/bin"
+          curl -fsSL -o "$dir/$file" "https://files.openscad.org/snapshots/$file"
+          echo "$OPENSCAD_SHA256  $dir/$file" | sha256sum -c -
+          chmod +x "$dir/$file"
+          (cd "$dir" && "./$file" --appimage-extract > /dev/null)
+          printf '#!/bin/sh\nexec "%s/squashfs-root/AppRun" "$@"\n' "$dir" > "$dir/bin/openscad"
+          chmod +x "$dir/bin/openscad"
+          echo "$dir/bin" >> "$GITHUB_PATH"
+          "$dir/bin/openscad" --version
+
+      # Installs scadman and the libraries scadman.lock pins, and exports OPENSCADPATH.
+      - uses: CameronBrooks11/scadman/setup@v0.1.0-alpha.9
+        with:
+          sync: "true"
+
+      - run: just check
