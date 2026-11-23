@@ -34,7 +34,7 @@ use <threads-scad/threads.scad>;
 // What the lid carries: a 1/2 NPT thread, one std bayonet port, or a ring of std ports round one, all in the middle
 variant = "ring"; // [npt, centre, ring]
 // The lid as it sits on the column, with a blank pin in each port, or turned as it prints
-part = "lid"; // [lid, assembly, print]
+part = "lid"; // [lid, assembly, print, none]
 
 /* [Column - measured] */
 
@@ -202,7 +202,8 @@ module column_lid() {
 
 // As it prints, with no supports but under a cup's flange: a flat lid on its top face, the plug
 // up; a pocketed one on its floor, the cup rising and the flange's ledge supported.
-if (part == "print")
+if (part == "none") {
+} else if (part == "print")
   if (pocketed)
     translate([0, 0, plate - floor_z])
       column_lid();

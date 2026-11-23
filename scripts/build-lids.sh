@@ -40,4 +40,20 @@ for name in npt centre ring centre_pocket; do
         rm -f "$OUT/$name.err"
     fi
 done
+
+# The reactor: the pocket and riser it works out, and the same on the 100 mm lid already printed.
+# Its asserts are the check; an echo export writes them into the file, not to stderr.
+reactor() {
+    local name=$1
+    shift
+    "$OPENSCAD" "$@" --export-format echo -o "$OUT/$name.echo" reactor.scad 2>/dev/null
+    if [ ! -s "$OUT/$name.echo" ] || grep -qE '^(ERROR|WARNING)' "$OUT/$name.echo"; then
+        echo "FAIL  $name  $(grep -m1 -E '^(ERROR|WARNING)' "$OUT/$name.echo" | cut -c1-200)"
+        failed=1
+    else
+        echo "ok    $name  $(sed -n 's/^ECHO: "reactor: //p' "$OUT/$name.echo" | sed 's/"$//')"
+    fi
+}
+reactor reactor
+reactor reactor_on_100 -D pocket_depth_set=100
 exit $failed
