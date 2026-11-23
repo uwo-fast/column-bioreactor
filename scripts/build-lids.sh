@@ -52,6 +52,7 @@ reactor() {
         failed=1
     else
         echo "ok    $name  $(sed -n 's/^ECHO: "reactor: //p' "$OUT/$name.echo" | sed 's/"$//')"
+        echo "      $(sed -n 's/^ECHO: "\(cut list: .*\)"$/\1/p' "$OUT/$name.echo")"
     fi
 }
 reactor reactor

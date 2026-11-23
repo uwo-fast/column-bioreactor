@@ -49,6 +49,9 @@ pocket_depth_set = undef;
 riser_l_set = undef;
 // The least culture over the riser's open end once the level has dropped by top_up_drop, mm
 inlet_cover_min = 40;
+// The least of a stroke left once the culture that stood in the line has passed the beam, mL. The
+// syringe is the sampler case's setting, -D syringe="5ml-gnr2" (its default) or another 5 mL layout
+stroke_past_beam_min = 1.0;
 
 /* [Output] */
 
@@ -72,6 +75,8 @@ inlet_wanted_z = column_floor_z() + depth / 2;
 riser_l = is_undef(riser_l_set) ? riser_top_z - inlet_wanted_z : riser_l_set;
 inlet_z = riser_top_z - riser_l;
 cover_low = (surface_z - top_up_drop) - inlet_z;
+stroke_ml = column_sampler_stroke_ml();
+line_ml = column_sampler_line_ml(riser_l);
 // The most culture the lid leaves headspace_min over
 culture_max_ml = (panel_z - lid_plate - headspace_min - column_floor_z()) * column_ml_per_mm();
 
@@ -86,6 +91,10 @@ assert(cover_low >= inlet_cover_min,
        str("reactor: the riser's open end has ", cover_low, " mm of culture over it once the level drops ",
            top_up_drop, " mm, under the ", inlet_cover_min, " mm minimum"));
 assert(inlet_z > column_floor_z(), str("reactor: a ", riser_l, " mm riser reaches the floor"));
+assert(stroke_ml - line_ml >= stroke_past_beam_min,
+       str("reactor: a ", stroke_ml, " mL stroke of the ", column_sampler_syringe_name(), " leaves ", stroke_ml - line_ml,
+           " mL past the beam after the ", line_ml, " mL in a ", riser_l, " mm riser's line, under the ",
+           stroke_past_beam_min, " mL minimum"));
 
 echo(str(
   "reactor: ", culture_ml, " mL stands ", depth, " mm deep, its surface ", -surface_z, " mm below the top face; ",
@@ -93,7 +102,14 @@ echo(str(
   ", headspace ", headspace_used, " (wanted ", headspace, ", min ", headspace_min, "), the lid holds up to ",
   culture_max_ml, " mL; riser ", riser_l, is_undef(riser_l_set) ? " (cut to mid-depth)" : " (set)",
   ", its open end ", inlet_z - column_floor_z(), " mm off the floor and ", surface_z - inlet_z,
-  " mm under the surface, ", cover_low, " mm at the low level"
+  " mm under the surface, ", cover_low, " mm at the low level; stroke ", stroke_ml, " mL, line ", line_ml,
+  " mL, ", stroke_ml - line_ml, " mL past the beam (min ", stroke_past_beam_min, ")"
+));
+echo(str(
+  "cut list: riser ", riser_l, " mm of ", column_sampler_riser_od(), " x ", column_sampler_riser_id(),
+  " mm stainless tube; clear FEP tube ", column_sampler_fep_cut(), " mm of ", column_sampler_fep_od(), " x ",
+  column_sampler_fep_id(), " mm; silicone sleeve ", column_sampler_sleeve_l(), " mm over the riser's top; ",
+  column_sampler_syringe_name(), ", with a luer-to-barb fitting into the FEP's top end"
 ));
 
 // The lid, at this depth with one port in the middle. Included here, after everything its

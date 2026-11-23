@@ -18,9 +18,19 @@ piece = "none"; // bayonet.scad's own drawing, off
 function column_sampler_riser_top_z() = sampler_riser_top_z();
 // The face the actuator bolts to, over the panel's top face
 function column_sampler_face_z() = sampler_face_z();
-// The riser's bore, for the line's volume
+// The riser's tube
 function column_sampler_riser_id() = riser_id;
 function column_sampler_riser_od() = riser_od;
+// The rest of the line, as the sampler case gives it: the clear FEP tube's cut and size, the silicone
+// sleeve over the riser's top, the syringe, one stroke, and the line's volume from a riser of length
+// l's open end up past the beam. The syringe is the sampler case's own setting: -D syringe="..."
+function column_sampler_fep_cut() = sampler_clear_tube_cut();
+function column_sampler_fep_od() = tube_od;
+function column_sampler_fep_id() = tube_id;
+function column_sampler_sleeve_l() = sampler_sleeve_l();
+function column_sampler_syringe_name() = get(sampler_syringe(), "name");
+function column_sampler_stroke_ml() = sampler_stroke_ml();
+function column_sampler_line_ml(l) = sampler_line_ml(l);
 
 // Both prints in place, the pin as the base's foot, and every bought part but the riser.
 module column_sampler() {
