@@ -11,6 +11,10 @@ default:
 setup:
     scadman sync
 
+# Render the pictures in views.tsv to output/figures: all, or `just render 'reactor_*'`.
+render filter="*":
+    @scripts/render-views.sh "{{filter}}"
+
 # Build every lid to output/<name>.stl, turned as it prints, and fail on any that does not build.
 check:
     @scripts/build-lids.sh
