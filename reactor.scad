@@ -121,24 +121,24 @@ pocket_depth = pocket;
 
 assert(plate == lid_plate, str("reactor: the lid's plate is ", plate, " mm, not the ", lid_plate, " assumed"));
 
+// In the section, the near half cut away along the sampler's plane, each part's cut face drawn in c
+module half(c) difference() {
+  children();
+  if (show == "section") color(c) translate([-300, -600, column_floor_z() - 100]) cube([600, 600, -column_floor_z() + 600]);
+}
+
 module reactor() {
-  color("LightCyan", 0.3) column_body();
-  color("YellowGreen", 0.5) column_culture(culture_ml);
-  color("SlateBlue") column_lid();
-  translate([0, 0, panel_z]) {
+  half("LightCyan") color("LightCyan", 0.3) column_body();
+  half("YellowGreen") color("YellowGreen", 0.5) column_culture(culture_ml);
+  half("SlateBlue") color("SlateBlue") column_lid();
+  half("Gainsboro") translate([0, 0, panel_z]) {
     column_sampler();
     column_sampler_riser(riser_l);
   }
 }
 
-if (show == "assembly") {
+if (show == "assembly" || show == "section") {
   reactor();
-} else if (show == "section") {
-  // the near half cut away along the sampler's plane
-  difference() {
-    reactor();
-    translate([-300, -600, column_floor_z() - 100]) cube([600, 600, -column_floor_z() + 600]);
-  }
 } else if (show == "lid") {
   // as column_lid.scad prints a pocketed lid: on its floor, the cup rising
   translate([0, 0, plate + pocket]) column_lid();

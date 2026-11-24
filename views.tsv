@@ -1,0 +1,10 @@
+# The pictures `just render` draws from reactor.scad: name, view, flags, tab-separated.
+#
+# view   the camera's rotation, as the GUI's Edit > Copy Viewport Rotation gives it.
+# flags  -D settings from reactor.scad's Customizer: show (assembly, section, lid), culture_ml,
+#        pocket_depth_set, riser_l_set; and any other OpenSCAD option. section removes the -y half,
+#        so a front view sees the cut. It renders with Manifold, about a minute: a preview draws
+#        every part's cut face in the last part's colour.
+
+reactor_section	90,0,0	-D show="section" --render --backend=Manifold
+lid_print	60,0,30	-D show="lid"

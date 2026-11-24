@@ -10,6 +10,7 @@ NPT thread from threads-scad, both pinned through scadman.
 ```sh
 just setup   # install the pinned libraries into .scadman/env
 just check   # every lid to output/<name>.stl, as it prints, and the reactor's checks; fails on any that does not build
+just render  # the pictures in views.tsv to output/figures/<name>.png, or those a glob names
 ```
 
 ## The column, as measured
