@@ -9,35 +9,39 @@ and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-- The printed top lid for the acrylic column (`lid/column_lid.scad`), from open-source-bioreactor:
-  an 8 mm flange over a 10 mm, Ø99.6 mm plug that centres it in the bore, the jar lid's 18 mm
-  plate in all, so open-source-bioreactor's std pins and blanks fit its ports unchanged
-- Three lid variants: `npt`, a 1/2 NPT thread through the plate; `centre`, one std bayonet port;
-  and `ring`, a std port in the middle with as many round it as fit, derived from the bore
-- `pocket_depth`, which sinks the ports' panel down the bore as the floor of an open cup for a deep
-  headspace; the 100 mm `centre_pocket` lid is printed and in use on the lab's column
-- `part = "print"`, each lid turned as it prints, and `part = "assembly"`, the lid with a blank
-  in each port
-- The column as measured (`column/column.scad`): a 100 mm bore all the way down, a 115 mm tube,
-  17 mm flanges, 670 mm overall, the floor 653 mm below the top face
-- turbidity-sensor's sampler case (v0.4.0) standing on the lid's centre port
+- A printed top lid for the acrylic column (`lid/column_lid.scad`), adapted from
+  open-source-bioreactor. It has an 8 mm flange over a Ø99.6 mm plug, 10 mm long, that centres it
+  in the bore. The total plate is the jar lid's 18 mm, so the std pins and blanks from
+  open-source-bioreactor fit its ports unchanged
+- Three lid variants: `npt`, with a 1/2 NPT thread through the plate; `centre`, with one std
+  bayonet port; and `ring`, with a std port in the centre and as many around it as fit, calculated
+  from the bore
+- `pocket_depth`, which lowers the port panel into the bore as the floor of an open cup, for a deep
+  headspace. The 100 mm `centre_pocket` lid has been printed and is in use on the lab's column
+- `part = "print"`, which draws each lid in print orientation, and `part = "assembly"`, which draws
+  the lid with a blank in each port
+- The column as measured (`column/column.scad`): a 100 mm bore along the full length, a 115 mm
+  tube, 17 mm flanges, 670 mm overall, and the floor 653 mm below the top face
+- The turbidity-sensor sampler case (v0.4.0), mounted on the centre port of the lid
   (`sampler/column_sampler.scad`)
-- `reactor.scad`, which works out the pocket depth from the culture held and the headspace wanted,
-  and cuts the sampler's riser to end at the culture's mid-depth; either can be set instead. The
-  build fails past a hard limit: headspace under `headspace_min`, less than `inlet_cover_min`
-  over the riser's end after a `top_up_drop`, a riser that reaches the floor, or a stroke that
-  leaves less than `stroke_past_beam_min` past the beam once it has moved the line's volume. The
-  echo gives what was wanted beside what was used, and a cut list. `show` draws the reactor
-  assembled, cut in half with each part's cut face in its own colour, or the lid as it prints
-- `just setup`, which installs the libraries scadman pins (bayonet-port-scad, threads-scad and
+- `reactor.scad`, which calculates the pocket depth from the culture volume and the target
+  headspace, and cuts the sampler riser so that it ends at the culture mid-depth. Either value can
+  be set instead. The build fails when it passes a hard limit: headspace under `headspace_min`,
+  less than `inlet_cover_min` over the riser end after a `top_up_drop`, a riser that reaches the
+  floor, or a stroke that leaves less than `stroke_past_beam_min` past the beam after it has moved
+  the line volume. The echo output shows the target values beside the values used, and a cut list.
+  `show` draws the assembled reactor, a half section with the cut face of each part in its own
+  colour, or the lid in print orientation
+- `just setup`, which installs the libraries pinned by scadman (bayonet-port-scad, threads-scad and
   turbidity-sensor), and `just check`, which builds each variant and `centre_pocket` to
-  `output/<name>.stl`, as they print, and runs the reactor's checks, on those libraries alone;
+  `output/<name>.stl` in print orientation and runs the reactor checks, using only those libraries.
   CI runs it on the OpenSCAD 2026.10.15 snapshot
-- `just render`, pictures of the views `views.tsv` lists as PNGs in `output/figures/`, or those a
-  glob names: the reactor cut in half from the front, and the lid as it prints
+- `just render`, which renders the views listed in `views.tsv` as PNGs in `output/figures/`, or
+  only those matching a glob: the reactor in half section from the front, and the lid in print
+  orientation
 - The GPL-3.0-or-later licence
 
 ### Changed
 
-- turbidity-sensor is pinned at v0.5.0, which brings syringe-actuator v0.1.2 with it. The lids,
-  the reactor's checks and both cut lists come out the same as on v0.4.0
+- turbidity-sensor is pinned at v0.5.0, which also brings in syringe-actuator v0.1.2. The lids, the
+  reactor checks and both cut lists are the same as on v0.4.0
