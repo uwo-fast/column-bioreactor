@@ -17,8 +17,9 @@
  *   check a riser already cut.
  *
  * Only the hard limits stop the build: headspace under headspace_min, a riser inlet with less than
- * inlet_cover_min of culture over it once the level has dropped by top_up_drop, or a riser that
- * reaches the floor. The echo gives what was wanted beside what was used.
+ * inlet_cover_min of culture over it once the level has dropped by top_up_drop, a riser that
+ * reaches the floor, or a stroke that leaves less than stroke_past_beam_min past the beam once it
+ * has moved the line's volume. The echo gives what was wanted beside what was used.
  *
  * FRAME: column.scad's, z = 0 on the top flange's top face, which is the lid's top face too.
  */
