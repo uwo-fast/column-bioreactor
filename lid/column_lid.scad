@@ -13,8 +13,8 @@
  * carries the o-ring in a groove in its face, so this lid seals by clamping it: a flat flange the
  * bolts pass through, and under it a plain plug into the bore that centres it, as the jar lid's
  * plug does in the jar's mouth. The plate is the jar lid's 18 mm, an 8 mm flange and a 10 mm
- * plug, because the bayonet pins are cut for that panel, so open-source-bioreactor's printed pins and
- * blanks fit these ports unchanged.
+ * plug, because the bayonet pins are cut for that panel, so open-source-bioreactor's printed pins
+ * and blanks fit these ports unchanged.
  *
  * A column is not always full: over a deep headspace, what hangs from a flat lid does not reach the
  * culture. pocket_depth sinks the ports' panel that far down the bore, as the floor of a cup with
