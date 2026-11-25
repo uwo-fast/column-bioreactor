@@ -36,3 +36,8 @@ and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `just render`, pictures of the views `views.tsv` lists as PNGs in `output/figures/`, or those a
   glob names: the reactor cut in half from the front, and the lid as it prints
 - The GPL-3.0-or-later licence
+
+### Changed
+
+- turbidity-sensor is pinned at v0.5.0, which brings syringe-actuator v0.1.2 with it. The lids,
+  the reactor's checks and both cut lists come out the same as on v0.4.0
