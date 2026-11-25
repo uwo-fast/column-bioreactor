@@ -13,6 +13,12 @@ just check   # every lid to output/<name>.stl, as it prints, and the reactor's c
 just render  # the pictures in views.tsv to output/figures/<name>.png, or those a glob names
 ```
 
+A change someone building or using the lid or the reactor would notice (the CAD, its checks, a
+recipe or a pinned library) adds a line under `## [Unreleased]` in [CHANGELOG.md](CHANGELOG.md),
+in the same pull request. A release moves those lines under the new version.
+
+`just render` also needs ImageMagick (`magick`) to crop the pictures.
+
 ## The column, as measured
 
 The lab's column U3. `column/column.scad` draws it from these.
