@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 #
-# Render the rows of views.tsv to output/figures/<name>.png, cropped to the model. $1 is a glob over
-# the names, "*" for all. Orthographic previews, unless a row asks for --render. A failing render
-# still exits 0, so stderr is the signal, and a picture that is not there is the other failure.
+# Render the rows of views.tsv to output/figures/<name>.png, cropped to the model. $1 is a glob
+# matched against the names; "*" selects all. Rows render as orthographic previews unless a row
+# passes --render. A failing render still exits 0, so the script checks stderr for errors and also
+# fails if the image is missing.
 set -uo pipefail
 : "${OPENSCAD:=openscad}"
 out=output/figures

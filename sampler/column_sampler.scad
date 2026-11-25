@@ -1,29 +1,30 @@
 /**
  * @file column_sampler.scad
- * @brief turbidity-sensor's sampler case on the column lid's centre port
+ * @brief The turbidity-sensor sampler case on the centre port of the column lid
  * @author Cameron K. Brooks
  * @copyright 2026
  *
- * The sampler case stands on a std bayonet port of an 18 mm panel, the column lid's plate, with
- * bayonet-port-scad's pin as its foot: turbidity-sensor's bayonet.scad sets that up, so this file
- * only includes it. `use` this file, so the case's globals stay out of the lid's.
+ * The sampler case stands on a std bayonet port in an 18 mm panel (the column lid plate), with the
+ * bayonet-port-scad pin as its foot. bayonet.scad in turbidity-sensor sets this up, so this file
+ * only includes it. `use` this file so that the case globals stay separate from the lid globals.
  *
- * FRAME: the port's, z = 0 on the panel's top face, +z up out of the column.
+ * FRAME: the port frame, with z = 0 on the top face of the panel and +z up out of the column.
  */
 
 include <turbidity-sensor/hardware/sampler-case/bayonet.scad>
-piece = "none"; // bayonet.scad's own drawing, off
+piece = "none"; // turn off the drawing in bayonet.scad
 
-// The riser's top end, over the panel's top face
+// Top end of the riser, above the top face of the panel
 function column_sampler_riser_top_z() = sampler_riser_top_z();
-// The face the actuator bolts to, over the panel's top face
+// Face the actuator bolts to, above the top face of the panel
 function column_sampler_face_z() = sampler_face_z();
-// The riser's tube
+// Riser tube
 function column_sampler_riser_id() = riser_id;
 function column_sampler_riser_od() = riser_od;
-// The rest of the line, as the sampler case gives it: the clear FEP tube's cut and size, the silicone
-// sleeve over the riser's top, the syringe, one stroke, and the line's volume from a riser of length
-// l's open end up past the beam. The syringe is the sampler case's own setting: -D syringe="..."
+// The rest of the line, as defined by the sampler case: the clear FEP tube cut length and size, the
+// silicone sleeve over the top of the riser, the syringe, one stroke, and the line volume from the
+// open end of a riser of length l to past the beam. The syringe is set in the sampler case:
+// -D syringe="..."
 function column_sampler_fep_cut() = sampler_clear_tube_cut();
 function column_sampler_fep_od() = tube_od;
 function column_sampler_fep_id() = tube_id;
@@ -32,7 +33,8 @@ function column_sampler_syringe_name() = get(sampler_syringe(), "name");
 function column_sampler_stroke_ml() = sampler_stroke_ml();
 function column_sampler_line_ml(l) = sampler_line_ml(l);
 
-// Both prints in place, the pin as the base's foot, and every bought part but the riser.
+// Both printed parts in place, with the pin as the foot of the base, and every bought part except
+// the riser.
 module column_sampler() {
   $fn = 64;
   color("DimGray") sampler_base() foot();

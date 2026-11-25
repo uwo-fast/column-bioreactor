@@ -1,28 +1,29 @@
 /**
  * @file column_lid.scad
- * @brief A printed top lid for the lab's acrylic column reactors, carrying open-source-bioreactor's
- *        bayonet ports
+ * @brief A printed top lid for the lab's acrylic column reactors, with the bayonet ports from
+ *        open-source-bioreactor
  * @author Cameron K. Brooks
  * @copyright 2026
  *
- * It reads the bayonet port and NPT mount libraries and changes nothing of theirs. `just check`
- * builds every variant (scripts/build-lids.sh), and reactor.scad includes it to draw the lid at
- * the depth the culture sets.
+ * It uses the bayonet port and NPT mount libraries without modifying them. `just check` builds
+ * every variant (scripts/build-lids.sh), and reactor.scad includes this file to draw the lid at the
+ * depth the culture requires.
  *
- * The column is a clear acrylic tube with a radially bolted flange at each end. Its own flange
- * carries the o-ring in a groove in its face, so this lid seals by clamping it: a flat flange the
- * bolts pass through, and under it a plain plug into the bore that centres it, as the jar lid's
- * plug does in the jar's mouth. The plate is the jar lid's 18 mm, an 8 mm flange and a 10 mm
- * plug, because the bayonet pins are cut for that panel, so open-source-bioreactor's printed pins
- * and blanks fit these ports unchanged.
+ * The column is a clear acrylic tube with a radially bolted flange at each end. The column flange
+ * has the o-ring in a groove in its face, so this lid seals by clamping against it. The lid is a
+ * flat flange that the bolts pass through, with a plain plug below it that fits into the bore and
+ * centres the lid, as the jar lid plug does in the jar mouth. The plate is 18 mm thick like the
+ * jar lid (an 8 mm flange and a 10 mm plug), because the bayonet pins are designed for that panel.
+ * This way the printed pins and blanks from open-source-bioreactor fit these ports unchanged.
  *
- * A column is not always full: over a deep headspace, what hangs from a flat lid does not reach the
- * culture. pocket_depth sinks the ports' panel that far down the bore, as the floor of a cup with
- * a pocket_wall wall, open at the top so a hand reaches in to turn the pin. 0 is the flat lid.
+ * The column is not always full, and with a deep headspace anything hanging from a flat lid does
+ * not reach the culture. pocket_depth lowers the port panel by that distance into the bore, as the
+ * floor of a cup with a wall of thickness pocket_wall. The cup is open at the top so that a hand
+ * can reach in to turn the pin. 0 gives a flat lid.
  *
- * FRAME: z = 0 is the lid's top face, the face the bolt heads sit on; the flange and the plug run
- * down from it, the plug into the column's bore. The ports' panel has its top face at
- * z = -pocket_depth, which is the top face itself on a flat lid.
+ * FRAME: z = 0 is the top face of the lid, where the bolt heads sit. The flange and the plug extend
+ * down from it, the plug into the column bore. The top face of the port panel is at
+ * z = -pocket_depth, which is the top face of the lid itself on a flat lid.
  */
 
 include <bayonet-port-scad/custom/bayonet_interfaces.scad>;
@@ -32,39 +33,39 @@ use <threads-scad/threads.scad>;
 
 /* [Variant] */
 
-// What the lid carries: a 1/2 NPT thread, one std bayonet port, or a ring of std ports round one, all in the middle
+// Lid features, all centred: a 1/2 NPT thread, one std bayonet port, or a ring of std ports around one
 variant = "ring"; // [npt, centre, ring]
-// The lid as it sits on the column, with a blank pin in each port, or turned as it prints
+// The lid as mounted on the column, with a blank pin in each port, or in print orientation
 part = "lid"; // [lid, assembly, print, none]
 
 /* [Column - measured] */
 
 // Flange outer diameter, mm
 flange_od = 160;
-// Bolt circle diameter, centre to centre across, mm
+// Bolt circle diameter, measured centre to centre, mm
 bolt_circle = 139.5;
 // Bolt holes, evenly spaced
 bolt_count = 8;
 // Bolt hole diameter, mm
 bolt_hole = 10;
-// The tube's bore, which the plug drops into, mm
+// Tube bore that the plug fits into, mm
 tube_id = 100;
 
 /* [Lid] */
 
-// Flange thickness, the plate the bolts pass, mm
+// Flange thickness, the part of the plate the bolts pass through, mm
 flange_thickness = 8;
-// How far the plug drops into the bore, mm
+// Depth of the plug in the bore, mm
 plug_height = 10;
-// Diametral clearance of the plug in the bore, the jar lid's, mm
+// Diametral clearance of the plug in the bore, the same as the jar lid, mm
 plug_allowance = 0.4;
-// Plastic left between a port's hole and the plug's edge, mm
+// Plastic left between a port hole and the edge of the plug, mm
 port_wall = 2;
-// Gap kept between neighbouring ports' flanges, mm
+// Gap between the flanges of neighbouring ports, mm
 port_gap = 3;
-// How far below the top face the ports' panel sinks into the bore, as a cup's floor; 0 is a flat lid, mm
+// Depth of the port panel (the cup floor) below the top face, into the bore; 0 is a flat lid, mm
 pocket_depth = 0;
-// The cup's wall, when there is one, mm
+// Cup wall thickness, when there is a cup, mm
 pocket_wall = 5;
 
 /* [Hidden] */
@@ -75,35 +76,35 @@ eps = 0.01;
 port = bayonet_std;
 npt = npt_thread_by_name("1/2 NPT");
 
-plate = flange_thickness + plug_height; // the panel the bayonet pins are cut for
+plate = flange_thickness + plug_height; // the panel thickness the bayonet pins are designed for
 plug_r = (tube_id - plug_allowance) / 2;
 hole_r = bayonet_port_hole_radius(port);
 flange_r = bayonet_flange_radius(port);
 
 pocketed = pocket_depth > 0;
-pocket_r = plug_r - pocket_wall; // the cup's inside
-floor_z = -pocket_depth; // the ports' panel's top face
+pocket_r = plug_r - pocket_wall; // inside radius of the cup
+floor_z = -pocket_depth; // top face of the port panel
 
-// The ring: as far out as the plug lets a hole go, and as many as fit round it with port_gap
-// between flanges. It has to clear the middle port's flange by the same gap. In a cup the pins'
-// flanges sit on its floor, so they have to stay port_gap inside its wall too.
+// The ring: placed as far out as the plug allows a hole, with as many ports as fit around it with
+// port_gap between flanges. It must clear the flange of the centre port by the same gap. In a cup,
+// the pin flanges sit on the floor, so they must also stay port_gap inside the cup wall.
 ring_r = pocketed
   ? min(pocket_r - port_wall - hole_r, pocket_r - port_gap - flange_r)
   : plug_r - port_wall - hole_r;
 ring_n = floor(180 / asin((flange_r + port_gap / 2) / ring_r));
 
-// Where each port sits, [x, y]; the first is the middle one.
+// Position of each port, [x, y]; the first is the centre port.
 ports =
   variant == "npt" ? []
   : variant == "centre" ? [[0, 0]]
   : concat([[0, 0]], [for (i = [0:ring_n - 1]) ring_r * [cos(i * 360 / ring_n), sin(i * 360 / ring_n)]]);
 
-// The 1/2 NPT is cut straight through the plate, with no boss, so the top stays flat and every
-// variant prints the same way, top face on the bed. The thread is the thermocouple mount's -
-// npt_thread_mount()'s ScrewHole call and numbers - and like it is straight, not tapered. 18 mm
-// of plate holds a 1/2 NPT fitting's 8.1 mm hand-tight and 13.6 mm made-up engagement (ASME
-// B1.20.1 L1 and L2).
-npt_allowance = 0.6; // the mount's
+// The 1/2 NPT thread is cut straight through the plate with no boss, so the top stays flat and
+// every variant prints the same way, top face on the bed. The thread matches the thermocouple
+// mount (the ScrewHole call and values in npt_thread_mount()) and, like it, is straight, not
+// tapered. The 18 mm plate covers the 8.1 mm hand-tight and 13.6 mm made-up engagement of a
+// 1/2 NPT fitting (ASME B1.20.1 L1 and L2).
+npt_allowance = 0.6; // the same as the mount
 
 assert(
   variant == "npt" || variant == "centre" || variant == "ring",
@@ -156,7 +157,7 @@ echo(str(
       )
 ));
 
-// The flange, and under it the plug - on a pocketed lid a cup down to the floor, hollowed above it.
+// The flange with the plug below it. On a pocketed lid the plug is a cup, hollow down to the floor.
 module column_lid_blank() {
   difference() {
     union() {
@@ -195,14 +196,14 @@ module column_lid() {
         cylinder(r=hole_r, h=plate + 2 * eps, center=true);
   }
 
-  // The coupling's lock half in each hole, as the jar lid carries them: one printed piece.
+  // The lock half of the coupling in each hole, as on the jar lid, printed as one piece.
   for (p = ports)
     translate([p[0], p[1], floor_z])
       bayonet_port(type=port, part="lock", panel_thickness=plate);
 }
 
-// As it prints, with no supports but under a cup's flange: a flat lid on its top face, the plug
-// up; a pocketed one on its floor, the cup rising and the flange's ledge supported.
+// Print orientation. A flat lid prints on its top face with the plug up and needs no supports. A
+// pocketed lid prints on its floor with the cup upward, and only the flange ledge is supported.
 if (part == "none") {
 } else if (part == "print")
   if (pocketed)
