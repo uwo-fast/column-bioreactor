@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 #
-# Build every column lid to output/<name>.stl, turned as it prints, and fail on any that does not.
-# This is the repository's check as well as its export.
+# Build every column lid to output/<name>.stl in print orientation, and fail if any build fails.
+# This is both the repository check and its export.
 #
-# A failing render still exits 0, so stderr is the signal: an ERROR, or a WARNING, which is where
-# OpenSCAD says a solid is not a 2-manifold; and a file that is not there or is empty. Only CGAL
-# prints that warning, so a build that offers a backend is pinned to it, as check-mesh does.
+# A failing render still exits 0, so the script checks stderr for an ERROR or a WARNING (OpenSCAD
+# reports a solid that is not 2-manifold as a WARNING), and checks for a missing or empty file.
+# Only CGAL prints that warning, so when OpenSCAD offers a backend option the build pins CGAL, as
+# check-mesh does.
 set -uo pipefail
 : "${OPENSCAD:=openscad}"
 : "${OUT:=output}"
@@ -15,7 +16,7 @@ backend=""
 help=$("$OPENSCAD" --help 2>&1)
 case "$help" in *--backend*) backend="--backend=CGAL" ;; esac
 
-# One lid: its name, then the settings that make it.
+# Build one lid: its name, then the settings for it.
 build() {
     local name=$1
     shift
@@ -41,8 +42,8 @@ for name in npt centre ring centre_pocket; do
     fi
 done
 
-# The reactor: the pocket and riser it works out, and the same on the 100 mm lid already printed.
-# Its asserts are the check; an echo export writes them into the file, not to stderr.
+# The reactor checks: the derived pocket and riser, and the same for the printed 100 mm lid.
+# The asserts are the check. An echo export writes them to the file, not to stderr.
 reactor() {
     local name=$1
     shift
