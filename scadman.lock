@@ -37,8 +37,8 @@ hash = "6daa2b750256b60fd64d1e35fefb653ddfba72ccefe3d0d2d8558168c1b3a937"
 [[package]]
 name = "turbidity-sensor"
 source = "https://github.com/uwo-fast/turbidity-sensor"
-rev = "dfc099da62fcc6377b72f13b9528b8a0dfd6d157"
-hash = "d0da7bc8dbccd7b85bc716196eb04e8ca874a8fa8b48dc84006a324536da3d77"
+rev = "6e9e011ebbf8feb9a7b363445d875311786c8441"
+hash = "4cb9c292d5693a4212dc1806cb1b7bb8950982ecc742d8eafed2ee335214c1a0"
 dependencies = [
     "NopSCADlib",
     "bayonet-port-scad",

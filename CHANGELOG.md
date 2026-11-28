@@ -45,3 +45,6 @@ and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - turbidity-sensor is pinned at v0.5.0, which also brings in syringe-actuator v0.1.2. The lids, the
   reactor checks and both cut lists are the same as on v0.4.0
+- turbidity-sensor is pinned at v0.6.0, which can draw the sampler foot's o-rings and the riser.
+  syringe-actuator stays at v0.1.2. The lids, the reactor checks and both cut lists are the same
+  as on v0.5.0
