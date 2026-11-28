@@ -19,4 +19,4 @@ rev = "4ae9aeb3b136f9858200f77a304b909a000ce3b4"
 # together.
 [dependencies.turbidity-sensor]
 git = "https://github.com/uwo-fast/turbidity-sensor"
-tag = "v0.5.0"
+tag = "v0.6.0"
